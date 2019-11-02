@@ -66,25 +66,53 @@ var questions = [
 
 //CONSTANTS
 const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 3;
+const MAX_QUESTIONS = 5;
 
-startGame = () => {
+function startGame(){
   questionCounter = 0;
   score = 0;
   availableQuesions = [...questions];
   getNewQuestion();
+  startTimer();
 };
+
+function startTimer() {
+  var tobj = document.getElementById("timespent")
+   var t = "16:30";
+   var s = 30;
+   var d = new Date();
+   var timeint = setInterval(function () {
+     s += 1;
+     d.setMinutes("16");
+     d.setSeconds(s);
+     min = d.getMinutes();
+     sec = d.getSeconds();
+     if (sec < 10) sec = "0" + sec;
+     document.getElementById("timespent").value = min + ":" + sec;
+   }, 1000);
+   tobj.value = t;
+ }
+ if (window.addEventListener) {              
+   window.addEventListener("load", startTimer);
+ } else if (window.attachEvent) {                 
+   window.attachEvent("onload", startTimer);
+ }
+ 
 
 getNewQuestion = () => {
   if (availableQuesions.length === 0 || questionCounter >= MAX_QUESTIONS) {
     localStorage.setItem("mostRecentScore", score);
     //go to the end page
-    return window.location.assign("/end.html");
+    return window.location.assign("/highscores.html");   //need to update the full url
+
   }
   questionCounter++;
   //progressText.innerText = `Question ${questionCounter}/${MAX_QUESTIONS}`;
   //Update the progress bar
-  progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+  console.log("progressbarfull", progressBarFull);
+  if(progressBarFull){
+    progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+  }
 
   const questionIndex = Math.floor(Math.random() * availableQuesions.length);
   currentQuestion = availableQuesions[questionIndex];
@@ -128,7 +156,10 @@ incrementScore = num => {
   scoreText.innerText = score;
 };
 
+
+
 startGame();
 
-  ///etc.
-;
+
+
+//;
